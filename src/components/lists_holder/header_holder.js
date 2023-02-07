@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from "styled-components";
-import { addToList } from '../../redux/slice';
+import { addToList, storeCurrent, storeLists } from '../../redux/slice';
 import FormHolder from "./form_holder";
 import Header from "./header";
 
@@ -10,7 +10,6 @@ const HeaderHolder = ({ showInput, setShowInput }) => {
 
     let [listValue, setListValue] = useState('')
     
-    let { lists } = useSelector((state) => state.mainSlice);
     let dispatch = useDispatch();
 
     const handleSubmit = (e) => {
@@ -21,6 +20,8 @@ const HeaderHolder = ({ showInput, setShowInput }) => {
         }
 
         dispatch(addToList(listValue));
+        dispatch(storeLists());
+        dispatch(storeCurrent());
         setListValue('');
         setShowInput(false);
     }

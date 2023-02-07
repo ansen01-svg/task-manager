@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { addTask } from '../../redux/slice';
+import { addTask, storeCurrent, storeLists } from '../../redux/slice';
 import FormHolder from './form_holder';
 import TaskHolder from "./tasks_holder";
 
@@ -37,6 +37,8 @@ const RestHolder = () => {
         }
 
         dispatch(addTask(taskValue));
+        dispatch(storeCurrent())
+        dispatch(storeLists())
         setTaskValue('');
     }
 

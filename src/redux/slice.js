@@ -2,11 +2,26 @@ import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from 'uuid';
 
 
+let getLists = () => {
+    let lists;
+    lists = localStorage.getItem('lists') ? JSON.parse(localStorage.getItem('lists')) : [];
+    return lists;
+}
+
+let getCurrentList = () => {
+    let current;
+    current = localStorage.getItem('current') ? JSON.parse(localStorage.getItem('current')) : {};
+    return current;
+}
+
+let currentList = getCurrentList()
+let list = getLists()
+
 export const mySlice = createSlice({
     name: 'mainSlice',
     initialState: {
-        lists: [],
-        currentList: {}
+        lists: list,
+        currentList: currentList,
     },
 
     reducers: {
@@ -52,11 +67,17 @@ export const mySlice = createSlice({
                 return task;
             })
             state.currentList = { ...state.currentList, tasks: newTasks };
+        },
+        storeLists: (state) => {
+            localStorage.setItem('lists', JSON.stringify(state.lists))
+        },
+        storeCurrent: (state) => {
+            localStorage.setItem('current', JSON.stringify(state.currentList))
         }
     }
 })
 
-export const { addToList, changeCurrentList, deleteTask, moveTask, addTask, editTask } = mySlice.actions;
+export const { addToList, changeCurrentList, deleteTask, moveTask, addTask, editTask, storeLists, storeCurrent } = mySlice.actions;
 
 
 export default mySlice.reducer;

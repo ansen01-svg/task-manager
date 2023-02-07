@@ -10,7 +10,13 @@ const Header = () => {
     return (
         <HeaderWrapper>
             <AiOutlineMenu id='icon' />
-            <h1>{ currentList.list }</h1>
+            <h1>
+                {
+                    currentList ? currentList.list
+                    :
+                    'List title'
+                }
+            </h1>
         </HeaderWrapper>
     )
 }

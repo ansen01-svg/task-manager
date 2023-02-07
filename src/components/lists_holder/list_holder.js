@@ -6,6 +6,7 @@ import List from "./list";
 const ListHolder = () => {
 
     let { lists } = useSelector(state => state.mainSlice);
+    console.log(lists)
 
     if (!lists.length) {
         return <></>
