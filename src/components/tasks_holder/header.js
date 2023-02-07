@@ -1,12 +1,16 @@
 import { AiOutlineMenu } from "react-icons/ai";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 
 const Header = () => {
+
+    let { currentList } = useSelector(state => state.mainSlice);
+
     return (
         <HeaderWrapper>
             <AiOutlineMenu id='icon' />
-            <h1>List1</h1>
+            <h1>{ currentList.list }</h1>
         </HeaderWrapper>
     )
 }

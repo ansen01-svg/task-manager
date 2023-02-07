@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import styled from "styled-components";
-import { useMyContext } from '../../context/context';
-import List from "../../utils/classes";
+import { addToList } from '../../redux/slice';
 import FormHolder from "./form_holder";
 import Header from "./header";
 
@@ -9,22 +9,20 @@ import Header from "./header";
 const HeaderHolder = ({ showInput, setShowInput }) => {
 
     let [listValue, setListValue] = useState('')
-
-    let { setLists, lists }  = useMyContext();
+    
+    let { lists } = useSelector((state) => state.mainSlice);
+    let dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (listValue) {
-            let newList = new List(listValue)
-            setLists(lists => {
-                lists = [...lists, newList]
-                localStorage.setItem('lists', JSON.stringify(lists))
-            })
-            console.log(lists)
-            setListValue('')
-            setShowInput(false)
+        if (!listValue) {
+            return;
         }
+
+        dispatch(addToList(listValue));
+        setListValue('');
+        setShowInput(false);
     }
 
     return (

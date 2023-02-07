@@ -1,56 +1,78 @@
 import { useState } from "react";
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
-import { BiTransfer } from "react-icons/bi";
+import { AiFillDelete } from "react-icons/ai";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { deleteTask, editTask, moveTask } from '../../redux/slice';
 
 
-const Task = () => {
+const Task = ({ taskItem }) => {
 
-    let [task, setTask] = useState('Testing')
+    let dispatch = useDispatch();
+    let [task, setTask] = useState(taskItem.task)
+
+    let handleChange = (e, taskId) => {
+        let newTask = e.target.value;
+        setTask(newTask);
+        dispatch(editTask({ taskId, newTask }))
+    }
+
+    let moveTask = (id) => {
+        dispatch(moveTask(id))
+    }
 
     return (
         <TaskWrapper>
-            <CheckboxHolder />
+            <CheckboxHolder 
+            taskId={taskItem.id}
+            moveTask={moveTask} 
+            dispatch={dispatch}
+            />
             <InputHolder 
             value={task}
             setTask={setTask}
+            taskId={taskItem.id}
+            handleChange={handleChange}
             />
-            <IconsHolder />
+            <IconsHolder
+            taskId={taskItem.id}
+            dispatch={dispatch}
+            />
         </TaskWrapper>
     )
 }
 
-const CheckboxHolder = () => {
+const CheckboxHolder = ({ taskId, dispatch }) => {
     return (
         <CommonWrapper
         width={'5%'}
         justify={'center'}
         >
-            <input type='checkbox' />
+            <input type='checkbox' onChange={() => dispatch(moveTask(taskId))}/>
         </CommonWrapper>
     )
 }
 
-const InputHolder = ({ value, setTask }) => {
+const InputHolder = ({ value, taskId, handleChange }) => {
     return (
         <CommonWrapper
         width={'70%'}
         justify={'center'}
         >
-            <TextInput type='text' value={value} />
+            <TextInput 
+            type='text' 
+            value={value} 
+            onChange={(e) => handleChange(e, taskId)} />
         </CommonWrapper>
     )
 }
 
-const IconsHolder = () => {
+const IconsHolder = ({ taskId, dispatch }) => {
     return (
         <CommonWrapper
         width={'30%'}
         justify={'flex-end'}
         >
-            <AiFillEdit id='icon' />
-            <AiFillDelete id='icon' />
-            <BiTransfer id='icon' />
+            <AiFillDelete id='icon' onClick={() => dispatch(deleteTask(taskId))} />
         </CommonWrapper>
     )
 }

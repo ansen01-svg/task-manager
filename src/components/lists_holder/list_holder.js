@@ -1,13 +1,21 @@
+import { useSelector } from 'react-redux';
 import styled from "styled-components";
 import List from "./list";
 
 
 const ListHolder = () => {
+
+    let { lists } = useSelector(state => state.mainSlice);
+
+    if (!lists.length) {
+        return <></>
+    }
+
     return (
         <HolderWrapper>
-            <List />
-            <List />
-            <List />
+            {
+                lists.map(list => <List listItem={list} key={list.id} />) 
+            }
         </HolderWrapper>
     )
 }

@@ -1,12 +1,19 @@
 import { AiOutlineMenu } from "react-icons/ai";
+import { useDispatch } from 'react-redux';
 import styled from "styled-components";
+import { changeCurrentList } from '../../redux/slice';
 
 
-const List = () => {
+const List = ({ listItem }) => {
+
+    let dispatch = useDispatch();
+
+    let { id, list } = listItem;
+
     return (
-        <ListWrapper>
+        <ListWrapper onClick={() => dispatch(changeCurrentList(id))} >
             <AiOutlineMenu id='icon' />
-            <p>List1</p>
+            <p>{list}</p>
         </ListWrapper>
     )
 }
